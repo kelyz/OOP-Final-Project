@@ -11,7 +11,7 @@ public class Parser {
 	private BufferedReader reader;
 	
 	// Retrieves all the unique words from the input file by removing duplicates
-	public Set<String> getUniqueWords(String filename) throws IOException {
+	public Set<String> getUniqueWords(File filename) throws IOException {
 		String line = null;
 		Set<String> uniqueWords = new HashSet<>();
 		try {
@@ -40,5 +40,39 @@ public class Parser {
 			}
 		}
 		reader.close();
+	}
+	
+	// Get frequency of words
+	public int[] frequencyTable(Set<String> words, File filename) throws IOException{
+		String line = null;
+		String[] unique = new String[words.size()];
+		unique = words.toArray(unique);
+		int[] dups = new int[unique.length];
+		try {
+			reader = new BufferedReader(new FileReader(filename));
+			while ((line = reader.readLine()) != null) {
+				String [] word = line.toLowerCase()
+							.replaceAll("[^a-zA-Z ]", "")
+							.trim().split(" ");
+				for(int x=0;x<unique.length;x++){
+					dups[x]=dups[x]+contains(unique[x],word);
+				}
+			}
+		} catch (IOException e) {
+			System.out.println("File Not Found!");
+		}
+		reader.close();
+		return dups;
+	}
+	
+	// Helper method to keep track of count of words
+	private int contains(String unique, String[] words){
+		int numOfDup = 0;
+		for(int x=0;x<words.length;x++){
+			if(words[x].equals(unique)){
+				numOfDup++;
+			}
+		}
+		return numOfDup;	
 	}
 }

@@ -51,7 +51,7 @@ public class HttpUtility {
 				if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
 					Element el = (Element) nodes.item(i);
 					String def = el.getElementsByTagName("dt").item(0).getTextContent();
-					return def.replaceAll("[:()\"]", "").trim(); 
+					return def.replaceAll("[()\"]", "").trim(); 
 				}
 			}
 		} catch (NullPointerException | SAXException | IOException e) {
